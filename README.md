@@ -11,6 +11,9 @@ Minimal UI for your FastAPI **Semantic Recommendation Microservice**.
 cp .env.example .env.local
 npm install
 npm run dev
+
+# build
+npm run build
 ```
 
 Open `http://localhost:3000`.
