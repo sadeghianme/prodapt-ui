@@ -1,28 +1,10 @@
 "use client";
 
 import * as React from "react";
-import type { RecommendItem, RecommendRequest, RecommendResponse } from "./lib/api";
+import {fetchRecommendations, getApiBase, RecommendItem} from "./lib/api";
 import { ResultCard } from "./components/ResultCard";
+const DEFAULT_API_BASE = getApiBase();
 
-const DEFAULT_API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
-
-async function fetchRecommendations(payload: RecommendRequest, requestId: string) {
-  const res = await fetch(`${DEFAULT_API_BASE}/recommend`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Request-ID": requestId,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`${res.status} ${res.statusText}${text ? ` - ${text}` : ""}`);
-  }
-
-  return (await res.json()) as RecommendResponse;
-}
 
 export default function Page() {
   const [query, setQuery] = React.useState("outfit for beach summer");
@@ -42,7 +24,7 @@ export default function Page() {
     setLastRequestId(requestId);
 
     try {
-      const data = await fetchRecommendations({ query, k, use_llm: useLlm }, requestId);
+      const data = await fetchRecommendations({ query, k, use_llm: useLlm });
       setResults(data.results ?? []);
     } catch (err) {
       setResults([]);
