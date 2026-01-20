@@ -23,6 +23,7 @@ export type RecommendResponse = {
 };
 
 export function getApiBase() {
+  console.log("API BASE URL =", process.env.NEXT_PUBLIC_API_BASE_URL);
   return (
     process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
     "http://127.0.0.1:8000"
